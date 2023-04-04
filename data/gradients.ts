@@ -5,7 +5,7 @@ export const gradients = [
     color2: "#ffe259",
     color3: "#87ceeb",
     direction: "to bottom right",
-    background: "linear-gradient(to bottom right, #ffa751, #ffe259, #87ceeb)",
+    background: "url(/images/vvq7.jpg)",
   },
   {
     id: 2,
@@ -99,84 +99,84 @@ export const gradients = [
 
 export const solidGradients = [
   {
-    id: 1,
+    id: 13,
     color1: "#F6D8AE",
     color2: "#F6D8AE",
     direction: "to right",
     background: "linear-gradient(to right, #F6D8AE, #F6D8AE)",
   },
   {
-    id: 2,
+    id: 14,
     color1: "#FFC8C3",
     color2: "#FFC8C3",
     direction: "to right",
     background: "linear-gradient(to right, #FFC8C3, #FFC8C3)",
   },
   {
-    id: 3,
+    id: 15,
     color1: "#F5E6E8",
     color2: "#F5E6E8",
     direction: "to right",
     background: "linear-gradient(to right, #F5E6E8, #F5E6E8)",
   },
   {
-    id: 4,
+    id: 16,
     color1: "#F3E5AB",
     color2: "#F3E5AB",
     direction: "to right",
     background: "linear-gradient(to right, #F3E5AB, #F3E5AB)",
   },
   {
-    id: 5,
+    id: 17,
     color1: "#B2EBF4",
     color2: "#B2EBF4",
     direction: "to right",
     background: "linear-gradient(to right, #B2EBF4, #B2EBF4)",
   },
   {
-    id: 6,
+    id: 18,
     color1: "#B4E9D6",
     color2: "#B4E9D6",
     direction: "to right",
     background: "linear-gradient(to right, #B4E9D6, #B4E9D6)",
   },
   {
-    id: 7,
+    id: 19,
     color1: "#D4C4E1",
     color2: "#D4C4E1",
     direction: "to right",
     background: "linear-gradient(to right, #D4C4E1, #D4C4E1)",
   },
   {
-    id: 8,
+    id: 20,
     color1: "#E8D8B1",
     color2: "#E8D8B1",
     direction: "to right",
     background: "linear-gradient(to right, #E8D8B1, #E8D8B1)",
   },
   {
-    id: 9,
+    id: 21,
     color1: "#F7D1C4",
     color2: "#F7D1C4",
     direction: "to right",
     background: "linear-gradient(to right, #F7D1C4, #F7D1C4)",
   },
   {
-    id: 10,
+    id: 22,
     color1: "#F0D0F1",
     color2: "#F0D0F1",
     direction: "to right",
     background: "linear-gradient(to right, #F0D0F1, #F0D0F1)",
   },
   {
-    id: 11,
+    id: 23,
     color1: "#B5E3D6",
     color2: "#B5E3D6",
     direction: "to right",
     background: "linear-gradient(to right, #B5E3D6, #B5E3D6)",
   },
   {
-    id: 12,
+    id: 24,
     color1: "#D6E3B5",
     color2: "#D6E3B5",
     direction: "to right",
@@ -186,54 +186,54 @@ export const solidGradients = [
 
 export const boxShadows = [
   {
-    id: 6,
+    id: 36,
     name: "None",
     value: "none",
   },
   {
-    id: 1,
+    id: 31,
     name: "Soft",
     value: "1px 1px 5px rgba(0, 0, 0, 0.1)",
   },
 
   {
-    id: 2,
+    id: 32,
     name: "Subtle",
     value: "2px 2px 5px rgba(0, 0, 0, 0.2)",
   },
 
   {
-    id: 3,
+    id: 33,
     name: "Moderate",
     value: "3px 3px 10px rgba(0, 0, 0, 0.3)",
   },
 
   {
-    id: 4,
+    id: 34,
     name: "Dark",
     value: "5px 20px 30px rgba(0, 0, 0, 0.3)",
   },
 
   {
-    id: 5,
+    id: 35,
     name: "Strong",
     value: "10px 10px 20px rgba(0, 0, 0, 0.4)",
   },
 
   {
-    id: 6,
+    id: 36,
     name: "Sharp",
     value: "5px 5px 10px rgba(0, 0, 0, 0.5)",
   },
 
   {
-    id: 7,
+    id: 37,
     name: "Bold",
     value: "8px 8px 15px rgba(0, 0, 0, 0.6)",
   },
 
   {
-    id: 8,
+    id: 38,
     name: "Intense",
     value: "15px 15px 30px rgba(0, 0, 0, 0.7)",
   },

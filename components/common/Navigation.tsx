@@ -1,111 +1,146 @@
 import { useAuthContext } from "@/context/User";
-import {
-  BsCodeSlash,
-  BsCurrencyDollar,
-  BsLaptop,
-  BsPersonFillGear,
-} from "react-icons/bs";
+import { BsCurrencyDollar, BsLaptop, BsPersonFillGear } from "react-icons/bs";
 import { CgMenuGridO } from "react-icons/cg";
-import styled from "styled-components";
+import { ReactNode, useRef, useEffect } from "react";
+
+import { loadStripe } from "@stripe/stripe-js";
+import { toast } from "react-hot-toast";
+
+const stripePromise = loadStripe(
+  "pk_test_51Mt6zvSIAU32P2Lew4U1hIV3B8Ko8vUYM1ojfji9qxuEvB9nE0JxbW2irDsafmL95FXuh8e5EVIuyPbDPMnkrrlS006wsiqlYx"
+);
 
 interface Props {}
 
-const Nav = styled.nav`
-  height: 70px;
-  border-bottom: 2px solid ${({ theme }) => theme.light};
-  background: ${({ theme }) => theme.foreground};
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-
-  .menu-icon {
-    font-size: 2rem;
-
-    @media (min-width: 767px) {
-      display: none;
-    }
-  }
-
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  h2 {
-  }
-`;
-
-const Links = styled.ul`
-  display: flex;
-  align-items: center;
-  font-size: 0.9rem;
-  gap: 0.5rem;
-  display: none;
-
-  @media (min-width: 767px) {
-    display: flex;
-  }
-
-  .link {
-    cursor: pointer;
-    padding: 0.45rem 1.25rem;
-    border-radius: 5px;
-
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 0.8rem;
-    transition: all 0.2s ease-in-out;
-
-    &:last-child {
-      border: 2px solid ${({ theme }) => theme.light};
-    }
-
-    &:hover {
-      background: ${({ theme }) => theme.light};
-    }
-  }
-`;
-
 const Navigation: React.FC<Props> = () => {
+  const themeSwatch = useRef<HTMLInputElement>(null);
   const { currentUser, loginWithGoogle, logout } = useAuthContext();
-  return (
-    <Nav>
-      <div className="container">
-        <h2 className="logo"></h2>
 
-        <Links>
-          <li className="link">
-            <BsCodeSlash className="nav-icon" />
-            <span>Code Editor</span>
-          </li>
-          <li className="link">
-            <BsLaptop className="nav-icon" />
-            <span>Mockups</span>
-          </li>
-          <li className="link">
-            <BsCurrencyDollar className="nav-icon" />
-            <span>Pricing</span>
-          </li>
+  const themeToggle = () => {
+    document.body.dataset.theme = themeSwatch?.current?.checked
+      ? "dark"
+      : "bumblebee";
+  };
+
+  const LinkElement = ({
+    title,
+    children,
+    onTap,
+    outline,
+  }: {
+    title: string | undefined;
+    onTap: () => void;
+    children: ReactNode;
+    outline?: boolean;
+  }) => {
+    return (
+      <li
+        onClick={onTap}
+        className={`text-primary-content flex items-start gap-3 cursor-pointer px-[1.5rem] py-[0.55rem] rounded-md hover:bg-base-200 ${
+          outline && "border-2 border-base-200"
+        }`}
+      >
+        {children}
+        <span>{title}</span>
+      </li>
+    );
+  };
+
+  const initiatePayment = async () => {
+    if (!currentUser) {
+      toast("Login to continue");
+      return;
+    }
+
+    const { session } = await fetch("/api/stripe/session", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: currentUser.email,
+        displayName: currentUser.displayName,
+        uid: currentUser.uid,
+      }),
+    }).then((res) => res.json());
+
+    const stripe = await stripePromise;
+    const stripeResponse = await stripe?.redirectToCheckout({
+      sessionId: session.id,
+    });
+
+    if (stripeResponse?.error) toast(stripeResponse?.error.message as string);
+  };
+
+  return (
+    <nav className="border-b-2 h-[70px] bg-base-100 border-b-base-200 flex items-center mb-4">
+      <div className="container mx-auto px-[1rem] lg:px-0 flex items-center justify-between">
+        <label
+          className="swap swap-rotate text-primary-content"
+          onClick={themeToggle}
+        >
+          <input type="checkbox" ref={themeSwatch} />
+
+          <svg
+            className="swap-on fill-current w-10 h-10"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z" />
+          </svg>
+
+          <svg
+            className="swap-off fill-current w-10 h-10"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z" />
+          </svg>
+        </label>
+
+        <ul className="md:flex items-center hidden gap-3">
+          <LinkElement onTap={() => {}} title="Mockups">
+            <BsLaptop className="text-[1rem]" />
+          </LinkElement>
+          <LinkElement onTap={initiatePayment} title="Pricing">
+            <BsCurrencyDollar className="text-[1rem]" />
+          </LinkElement>
+
           {currentUser ? (
-            <li className="link" onClick={logout}>
-              <BsPersonFillGear className="nav-icon" />
-              {currentUser.displayName
-                ?.split(" ")
-                .map((word) => word[0])
-                .join("")}
-            </li>
+            <div className="dropdown dropdown-end">
+              <label tabIndex={0}>
+                <LinkElement
+                  outline
+                  onTap={() => {}}
+                  title={currentUser.displayName
+                    ?.split(" ")
+                    .map((word) => word[0])
+                    .join("")}
+                >
+                  <BsPersonFillGear className="text-[1rem]" />
+                </LinkElement>
+              </label>
+              <ul
+                tabIndex={0}
+                className="dropdown-content p-2 mt-1 menu bg-base-100 w-full min-w-[262px] border-2 rounded-md"
+              >
+                <li>
+                  <a>Go to Dashboard</a>
+                </li>
+                <li onClick={logout}>
+                  <a>Logout</a>
+                </li>
+              </ul>
+            </div>
           ) : (
-            <li className="link">
-              <BsPersonFillGear className="nav-icon" />
-              <span onClick={loginWithGoogle}>Login</span>
-            </li>
+            <LinkElement outline onTap={loginWithGoogle} title="Log in">
+              <BsPersonFillGear className="text-[1rem]" />
+            </LinkElement>
           )}
-        </Links>
-        <CgMenuGridO className="menu-icon" />
+        </ul>
+        <CgMenuGridO className="text-[2rem] md:hidden text-primary-content" />
       </div>
-    </Nav>
+    </nav>
   );
 };
 export default Navigation;

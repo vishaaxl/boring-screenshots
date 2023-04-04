@@ -1,4 +1,9 @@
-import { BackgroundType, EditorProps, GradientProps } from "@/interface";
+import {
+  BackgroundType,
+  EditorProps,
+  GradientProps,
+  PresetProps,
+} from "@/interface";
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 interface Props {
@@ -18,6 +23,9 @@ const defaultValue = {
   borderRadius: 5,
   canvasRoundness: 0,
   padding: 64,
+  left: 0,
+  right: 0,
+  rotate: 0,
   tilt: {
     name: "to center",
     value: "rotate(0)",
@@ -54,9 +62,24 @@ const EditorContextProvider: React.FC<Props> = ({ children }) => {
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const getCurrentPreset = () => {
+    return data;
+  };
+
+  const updatePreset = (data: PresetProps) => {
+    setData((prev) => ({ selectedImage: prev.selectedImage, ...data }));
+  };
+
   return (
     <EditorContext.Provider
-      value={{ ...data, updateData, updateBackground, resetChanges }}
+      value={{
+        ...data,
+        updateData,
+        updatePreset,
+        updateBackground,
+        resetChanges,
+        getCurrentPreset,
+      }}
     >
       {children}
     </EditorContext.Provider>

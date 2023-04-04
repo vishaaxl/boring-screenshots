@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import {
-  User as FirebaseUser,
   GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged,
 } from "firebase/auth";
-import { auth } from "@/firebase.config";
+import { auth, db } from "@/firebase.config";
 import { UserAuthProps, UserDetails } from "@/interface";
 import { toast } from "react-hot-toast";
+import { doc, setDoc } from "firebase/firestore";
 
 const AuthContext = createContext<UserAuthProps>({
   loginWithGoogle: () => {},
@@ -22,12 +22,26 @@ const AuthContextProvider = ({ children }: any) => {
   const loginWithGoogle = () => {
     try {
       signInWithPopup(auth, provider)
-        .then((result) => {
-          toast("Logged in successfully");
-          console.log(result);
+        .then(({ user }) => {
+          const docRef = doc(db, "users", user.uid);
+
+          // save the user in db
+          setDoc(docRef, {
+            displayName: user.displayName,
+            email: user.email,
+            photoUrl: user.photoURL,
+          })
+            .then(() => {
+              toast("Logged in successfully");
+            })
+            .catch(() => {
+              toast.error("Couldn't save user in database!");
+            });
+
+          // after saving the user
         })
         .catch(() => {
-          toast.error("Something went wrong!");
+          toast.error("Cannot authorise user!");
         });
     } catch (error) {
       toast.error("Something went wrong!");
@@ -43,11 +57,16 @@ const AuthContextProvider = ({ children }: any) => {
 
   const getCurrentUser = () => {
     onAuthStateChanged(auth, (currentUser) => {
-      setUser({
-        email: currentUser?.email,
-        displayName: currentUser?.displayName,
-        photoUrl: currentUser?.photoURL,
-      });
+      if (currentUser) {
+        setUser({
+          email: currentUser.email,
+          displayName: currentUser.displayName,
+          photoUrl: currentUser.photoURL,
+          uid: currentUser.uid,
+        });
+      } else {
+        setUser(null);
+      }
     });
   };
 

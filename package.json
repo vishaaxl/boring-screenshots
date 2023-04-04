@@ -9,22 +9,31 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^1.52.0",
     "@types/node": "18.15.5",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "daisyui": "^2.51.5",
+    "dom-to-image": "^2.6.0",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "firebase": "^9.18.0",
+    "firebase-admin": "^11.5.0",
+    "micro": "^10.0.1",
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.8.0",
-    "styled-components": "^5.3.9",
+    "stripe": "^11.17.0",
     "typescript": "5.0.2"
   },
   "devDependencies": {
-    "@types/styled-components": "^5.1.26"
+    "@types/dom-to-image": "^2.6.4",
+    "@types/styled-components": "^5.1.26",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.7"
   }
 }

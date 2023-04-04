@@ -1,35 +1,19 @@
-import styled from "styled-components";
-
 interface Props {
+  onTap: () => void;
   title: string;
   active: boolean;
-  onTap: () => void;
 }
-
-interface TileProps {
-  active: boolean;
-}
-
-const Tile = styled.div<TileProps>`
-  border-radius: 5px;
-  border: 2px solid ${({ theme }) => theme.light};
-  padding: 0.5rem 0.75rem;
-
-  font-size: 0.8rem;
-  cursor: pointer;
-  background: ${({ active, theme }) =>
-    active ? theme.light : theme.foreground};
-
-  &:hover {
-    background: ${({ theme }) => theme.light};
-  }
-`;
 
 const IconTile: React.FC<Props> = ({ title, onTap, active }) => {
   return (
-    <Tile onClick={onTap} active={active}>
+    <div
+      onClick={onTap}
+      className={`rounded-md border-[2px] border-base-200 py-2 px-3 cursor-pointer hover:bg-base-200 ${
+        active && "bg-base-200"
+      }`}
+    >
       <span>{title}</span>
-    </Tile>
+    </div>
   );
 };
 

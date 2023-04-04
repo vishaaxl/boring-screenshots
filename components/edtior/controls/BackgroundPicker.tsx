@@ -4,125 +4,11 @@ import { directionArray } from "@/data/misc";
 import { BackgroundType, GradientProps } from "@/interface";
 import { useState } from "react";
 
-import styled from "styled-components";
-import PrimaryButton from "../common/Button";
+import BackgroundTile from "./BackgroundTile";
 
 interface Props {
   closePicker: () => void;
 }
-
-interface BackgroundTileProps {
-  data: string;
-  size?: string;
-}
-
-export const BackgroundTile = styled.div<BackgroundTileProps>`
-  cursor: pointer;
-  border-radius: 2px;
-  height: ${({ size }) => size || "32px"};
-  width: ${({ size }) => size || "32px"};
-
-  background: #a8c0ff;
-  background: ${({ data }) => data};
-`;
-
-const BackgroundPicker = styled.div`
-  padding: 0.5rem 1rem 1rem 1rem;
-  background: ${({ theme }) => theme.foreground};
-  border-radius: 5px;
-  border: 2px solid ${({ theme }) => theme.light};
-
-  position: absolute;
-  right: 0;
-  top: 100%;
-  z-index: 12;
-
-  .options-wrapper {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 0.1rem;
-  }
-`;
-
-const TabSelector = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  background: ${({ theme }) => theme.light};
-  border-radius: 5px;
-  padding: 0.125rem;
-  margin-bottom: 0.75rem;
-
-  span {
-    cursor: pointer;
-    text-align: center;
-    display: inline-block;
-    font-size: 0.8rem;
-    font-weight: 500;
-    padding: 0.5rem 0.75rem;
-  }
-
-  .active {
-    border-radius: 5px;
-    background: ${({ theme }) => theme.foreground};
-  }
-`;
-
-const CustomGradientSelector = styled.div`
-  padding: 1rem 0;
-
-  .colors {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .direction {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 0.1rem;
-    padding-top: 1rem;
-
-    span {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 52px;
-      width: 52px;
-      border-radius: 4px;
-      border: 2px solid ${({ theme }) => theme.light};
-
-      &:hover {
-        background: ${({ theme }) => theme.light};
-      }
-    }
-
-    .active-direction {
-      background: ${({ theme }) => theme.light};
-    }
-  }
-
-  input[type="color"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    width: 42px;
-    height: 42px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-  }
-
-  input[type="color"]::-webkit-color-swatch {
-    border-radius: 5px;
-    border: none;
-  }
-
-  input[type="color"]::-moz-color-swatch {
-    border-radius: 5px;
-    border: none;
-  }
-`;
 
 const BackgroundPickerWidget: React.FC<Props> = ({ closePicker }) => {
   const { currentBackground, updateData, updateBackground } =
@@ -166,44 +52,49 @@ const BackgroundPickerWidget: React.FC<Props> = ({ closePicker }) => {
   };
 
   return (
-    <BackgroundPicker>
-      <TabSelector>
+    <div className="absolute right-0 top-full py-2 px-4 bg-base-100 z-20 border-[2px] border-base-200 rounded-md">
+      {/* Tab selecter */}
+      <div className="grid grid-cols-2 bg-base-200 rounded-md p-[0.125rem] mb-3">
         <span
-          className={isActive == "gradient" ? "active" : "in-active"}
+          className={`cursor-pointer text-center rounded-md inline-block font-medium py-2 px-3 ${
+            isActive == "gradient" && "bg-base-100"
+          }`}
           onClick={() => setIsActive("gradient")}
         >
           Gradient
         </span>
         <span
-          className={isActive == "solid" ? "active" : "in-active"}
+          className={`cursor-pointer text-center rounded-md inline-block font-medium py-2 px-3 ${
+            isActive == "solid" && "bg-base-100"
+          }`}
           onClick={() => setIsActive("solid")}
         >
           Solid
         </span>
-      </TabSelector>
-      <div className="options-wrapper">
+      </div>
+      <div className="grid grid-cols-6 gap-[0.1rem]">
         {isActive == "gradient"
           ? gradients.map((bg) => (
               <BackgroundTile
                 key={bg.id}
-                data={bg.background}
+                background={bg.background}
                 size="52px"
-                onClick={() => updateCurrentBackground(bg)}
+                onTap={() => updateCurrentBackground(bg)}
               />
             ))
           : solidGradients.map((bg) => (
               <BackgroundTile
                 key={bg.id}
-                data={bg.background}
+                background={bg.background}
                 size="52px"
-                onClick={() => updateCurrentBackground(bg)}
+                onTap={() => updateCurrentBackground(bg)}
               />
             ))}
       </div>
       {isActive == "gradient" && (
         <>
-          <CustomGradientSelector>
-            <div className="colors">
+          <div className="flex flex-col py-4 gap-1">
+            <div className="flex justify-between items-center">
               <span>Custom Gradient</span>
               <div>
                 <input
@@ -232,11 +123,13 @@ const BackgroundPickerWidget: React.FC<Props> = ({ closePicker }) => {
                 />
               </div>
             </div>
-            <div className="direction">
+            <div className="flex gap-1">
               {directionArray.map((dir) => (
                 <span
-                  className={`icon-wrapper ${
-                    customGradient.direction == dir.name && "active-direction"
+                  className={`h-[52px] w-[52px] p-4 border-[2px] flex items-center justify-center rounded-md border-base-200 cursor-pointer hover:bg-base-200 ${
+                    customGradient.direction == dir.name
+                      ? "bg-base-200"
+                      : "bg-base-100"
                   }`}
                   key={dir.id}
                   onClick={() => onCustomGradientChange("direction", dir.name)}
@@ -245,14 +138,16 @@ const BackgroundPickerWidget: React.FC<Props> = ({ closePicker }) => {
                 </span>
               ))}
             </div>
-          </CustomGradientSelector>
-          <PrimaryButton
-            title="Apply Custom Gradient"
-            onTap={() => applyCustomGradient()}
-          />
+          </div>
+          <button
+            className="btn w-full font-medium"
+            onClick={() => applyCustomGradient()}
+          >
+            Apply Custom Gradient
+          </button>
         </>
       )}
-    </BackgroundPicker>
+    </div>
   );
 };
 export default BackgroundPickerWidget;
