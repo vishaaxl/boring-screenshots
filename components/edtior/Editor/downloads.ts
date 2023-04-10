@@ -5,7 +5,7 @@ export const downloadimagePng = (node: HTMLDivElement | null, res: number) => {
   let savingToast = toast.loading("Saving Image, please wait");
 
   if (node) {
-    let scale = res;
+    let scale = window.devicePixelRatio * res;
     domtoimage
       .toPng(node, {
         width: node.clientWidth * scale,
@@ -34,7 +34,8 @@ export const downloadimageJpeg = (node: HTMLDivElement | null, res: number) => {
   let savingToast = toast.loading("Saving Image, please wait");
 
   if (node) {
-    let scale = res;
+    let scale = window.devicePixelRatio * res;
+
     domtoimage
       .toPng(node, {
         width: node.clientWidth * scale,
@@ -63,7 +64,8 @@ export const downloadimageSvg = (node: HTMLDivElement | null, res: number) => {
   let savingToast = toast.loading("Saving Image, please wait");
 
   if (node) {
-    let scale = res;
+    let scale = window.devicePixelRatio * res;
+
     domtoimage
       .toPng(node, {
         width: node.clientWidth * scale,

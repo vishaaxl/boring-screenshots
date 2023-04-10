@@ -12,6 +12,7 @@ import {
   downloadimagePng,
   downloadimageSvg,
 } from "./downloads";
+import { toast } from "react-hot-toast";
 
 interface Props {}
 
@@ -79,16 +80,19 @@ const Editor: React.FC<Props> = () => {
             tabIndex={0}
             className="dropdown-content p-2 mt-1 menu bg-base-100 w-full min-w-[262px] border-2 rounded-md"
           >
-            <li onClick={() => downloadimagePng(imageToDownload.current, 4)}>
+            <li onClick={() => downloadimagePng(imageToDownload.current, 1)}>
               <a>Export as PNG 1x</a>
             </li>
-            <li onClick={() => downloadimagePng(imageToDownload.current, 10)}>
+            <li onClick={() => downloadimagePng(imageToDownload.current, 2)}>
               <a>Export as PNG 2x</a>
             </li>
-            <li onClick={() => downloadimageSvg(imageToDownload.current, 4)}>
+            <li onClick={() => downloadimagePng(imageToDownload.current, 4)}>
+              <a>Export as PNG 4x</a>
+            </li>
+            <li onClick={() => downloadimageSvg(imageToDownload.current, 2)}>
               <a>Export as SVG</a>
             </li>
-            <li onClick={() => downloadimageJpeg(imageToDownload.current, 4)}>
+            <li onClick={() => downloadimageJpeg(imageToDownload.current, 2)}>
               <a>Export as JPEG</a>
             </li>
           </ul>
@@ -111,11 +115,16 @@ const Editor: React.FC<Props> = () => {
           <BiReset className="icon" />
         </OptionButtonOutline>
 
-        <label htmlFor="my-modal-4">
-          <OptionButtonOutline title="Save Preset">
-            <BsBookmark className="icon" />
-          </OptionButtonOutline>
-        </label>
+        {/* <label htmlFor="my-modal-4"> */}
+        <OptionButtonOutline
+          title="Save Preset"
+          onTap={() =>
+            toast("This feature is paid, and will be available soon")
+          }
+        >
+          <BsBookmark className="icon" />
+        </OptionButtonOutline>
+        {/* </label> */}
       </div>
 
       {/* Editor Wrapper */}

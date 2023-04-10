@@ -5,6 +5,7 @@ import { ReactNode, useRef, useEffect } from "react";
 
 import { loadStripe } from "@stripe/stripe-js";
 import { toast } from "react-hot-toast";
+import { FaMoneyBillAlt } from "react-icons/fa";
 
 const stripePromise = loadStripe(
   "pk_test_51Mt6zvSIAU32P2Lew4U1hIV3B8Ko8vUYM1ojfji9qxuEvB9nE0JxbW2irDsafmL95FXuh8e5EVIuyPbDPMnkrrlS006wsiqlYx"
@@ -98,16 +99,16 @@ const Navigation: React.FC<Props> = () => {
           </svg>
         </label>
 
-        <ul className="md:flex items-center hidden gap-3">
-          <LinkElement onTap={() => {}} title="Mockups">
+        <ul className="flex items-center gap-3">
+          {/* <LinkElement outline onTap={() => {}} title="Code Editor">
             <BsLaptop className="text-[1rem]" />
           </LinkElement>
-          <LinkElement onTap={initiatePayment} title="Pricing">
-            <BsCurrencyDollar className="text-[1rem]" />
-          </LinkElement>
+          <LinkElement outline onTap={initiatePayment} title="Pricing">
+            <FaMoneyBillAlt className="text-[1rem]" />
+          </LinkElement> */}
 
           {currentUser ? (
-            <div className="dropdown dropdown-end">
+            <li className="dropdown dropdown-end">
               <label tabIndex={0}>
                 <LinkElement
                   outline
@@ -131,14 +132,14 @@ const Navigation: React.FC<Props> = () => {
                   <a>Logout</a>
                 </li>
               </ul>
-            </div>
+            </li>
           ) : (
             <LinkElement outline onTap={loginWithGoogle} title="Log in">
               <BsPersonFillGear className="text-[1rem]" />
             </LinkElement>
           )}
         </ul>
-        <CgMenuGridO className="text-[2rem] md:hidden text-primary-content" />
+        {/* <CgMenuGridO className="text-[2rem] md:hidden text-primary-content" /> */}
       </div>
     </nav>
   );

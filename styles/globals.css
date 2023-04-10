@@ -2,9 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-body,
-* {
+body {
   box-sizing: border-box;
+  font-size: 0.875rem;
+
+  background-size: 140px 140px;
+  background-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.1) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+}
+
+* {
   font-size: 0.875rem;
 }
 
