@@ -21,6 +21,7 @@ import PanelHeading from "./PanelHeading";
 import BackgroundTile from "./BackgroundTile";
 import Presets from "./Presets";
 import { useAuthContext } from "@/context/User";
+import { toast } from "react-hot-toast";
 
 interface Props {}
 
@@ -181,7 +182,11 @@ const ControlPanel: React.FC<Props> = () => {
           {/* inner scrolling wrapper */}
           <div className="relative rounded-md overflow-hidden">
             <PanelHeading title="Image Options" />
-            <Control title="Frame" value="macOs Light">
+            <Control
+              title="Frame"
+              value="macOs Light"
+              onTap={() => toast("This Feature will be available soon")}
+            >
               <BiChevronRight className="text-xl" />
             </Control>
             <div
